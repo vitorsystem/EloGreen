@@ -49,7 +49,10 @@ public class ProductService : IProductService
 
     public async Task<ProductResponse?> GetProductByIdAsync(Guid id)
     {
-        var product = await _context.Products.FindAsync(id);
+        var product = await _context.Products
+             .Include(p => p.Supplier)
+             .FirstOrDefaultAsync(p => p.Id == id);
+
         if (product == null) return null;
 
         return new ProductResponse
@@ -59,6 +62,7 @@ public class ProductService : IProductService
             Description = product.Description,
             BaseCarbonFootprint = product.BaseCarbonFootprint,
             SupplierId = product.SupplierId,
+            SupplierName = product.Supplier?.Name,
             CreatedAt = product.CreatedAt
         };
     }

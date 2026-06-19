@@ -1,30 +1,40 @@
-# Acesse https://aka.ms/customizecontainer para saber como personalizar seu contêiner de depuração e como o Visual Studio usa este Dockerfile para criar suas imagens para uma depuração mais rápida.
-
-# Esta fase é usada durante a execução no VS no modo rápido (Padrão para a configuração de Depuração)
+# Fase base para execução
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-
-# Esta fase é usada para compilar o projeto de serviço
+# Fase de compilação
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["EloGreen/EloGreen.csproj", "EloGreen/"]
-RUN dotnet restore "./EloGreen/EloGreen.csproj"
+
+# 1. Copiando TODOS os projetos da sua arquitetura para o Restore funcionar
+COPY ["EloGreen/EloGreen.API.csproj", "EloGreen/"]
+COPY ["EloGreen.Application/EloGreen.Application.csproj", "EloGreen.Application/"]
+COPY ["EloGreen.Domain/EloGreen.Domain.csproj", "EloGreen.Domain/"]
+COPY ["EloGreen.Infrastructure/EloGreen.Infrastructure.csproj", "EloGreen.Infrastructure/"]
+
+# 2. Restaurando os pacotes (agora com o nome correto: EloGreen.API)
+RUN dotnet restore "./EloGreen/EloGreen.API.csproj"
+
+# 3. Copiando o resto do código-fonte
 COPY . .
 WORKDIR "/src/EloGreen"
-RUN dotnet build "./EloGreen.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# Esta fase é usada para publicar o projeto de serviço a ser copiado para a fase final
+# 4. Compilando o projeto
+RUN dotnet build "./EloGreen.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# Fase de publicação
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./EloGreen.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./EloGreen.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Esta fase é usada na produção ou quando executada no VS no modo normal (padrão quando não está usando a configuração de Depuração)
+# Fase final (Imagem de Produção)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "EloGreen.dll"]
+
+# 5. Entrypoint ajustado para a DLL correta
+ENTRYPOINT ["dotnet", "EloGreen.API.dll"]
