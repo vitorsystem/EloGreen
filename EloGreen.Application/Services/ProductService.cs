@@ -78,6 +78,7 @@ public class ProductService : IProductService
             .OrderBy(s => s.Name)
             .Skip((page - 1) * size)
             .Take(size)
+            .Include(p => p.Supplier)
             .Select(p => new ProductResponse
             {
                 Id = p.Id,
@@ -85,7 +86,8 @@ public class ProductService : IProductService
                 Description = p.Description,
                 CreatedAt = p.CreatedAt,
                 BaseCarbonFootprint = p.BaseCarbonFootprint,
-                SupplierId = p.SupplierId
+                SupplierId = p.SupplierId,      
+                SupplierName = p.Supplier!.Name
             })
             .ToListAsync();
 

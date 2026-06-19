@@ -22,7 +22,7 @@ public class SupplierService : ISupplierService
         {
             Name = request.Name,
             Document = request.Document,
-            IsEsgCertified = request.IsEsgCertified,
+            IsEsgCertified = (bool)request.IsEsgCertified,
             CreatedAt = DateTime.UtcNow
         };
 

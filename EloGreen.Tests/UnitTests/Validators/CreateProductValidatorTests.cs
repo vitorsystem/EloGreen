@@ -2,7 +2,7 @@
 using EloGreen.Application.ViewModels.Request;
 using Xunit;
 
-namespace EloGreen.Tests.Validators;
+namespace EloGreen.Tests.UnitTests.Validators;
 
 public class CreateProductValidatorTests
 {

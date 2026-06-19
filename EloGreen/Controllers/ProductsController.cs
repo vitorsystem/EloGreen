@@ -2,6 +2,7 @@
 using EloGreen.Application.Services.Interfaces;
 using EloGreen.Application.ViewModels.Request;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EloGreen.API.Controllers;
@@ -51,6 +52,7 @@ public class ProductsController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
@@ -62,6 +64,7 @@ public class ProductsController : ControllerBase
         return NoContent();
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProductRequest request, [FromServices] IValidator<UpdateProductRequest> updateValidator)
     {

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
 
-namespace EloGreen.Tests.Controllers;
+namespace EloGreen.Tests.UnitTests.Controllers;
 
 public class SuppliersControllerTests
 {
@@ -40,7 +40,7 @@ public class SuppliersControllerTests
             Id = Guid.NewGuid(),
             Name = request.Name,
             Document = request.Document,
-            IsEsgCertified = request.IsEsgCertified,
+            IsEsgCertified = (bool)request.IsEsgCertified,
             CreatedAt = DateTime.UtcNow
         };
 

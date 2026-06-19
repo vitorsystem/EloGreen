@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using FluentValidation;
+﻿using EloGreen.Application.Services.Interfaces;
 using EloGreen.Application.ViewModels.Request;
-using EloGreen.Application.Services.Interfaces;
+using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EloGreen.API.Controllers;
 
@@ -39,6 +40,7 @@ public class SuppliersController(ISupplierService supplierService, IValidator<Cr
         return Ok(result);
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateSupplierRequest request, [FromServices] IValidator<UpdateSupplierRequest> updateValidator)
     {
@@ -51,6 +53,7 @@ public class SuppliersController(ISupplierService supplierService, IValidator<Cr
         return NoContent();
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {

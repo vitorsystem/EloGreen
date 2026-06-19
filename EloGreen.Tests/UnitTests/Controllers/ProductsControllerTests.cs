@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
 
-namespace EloGreen.Tests.Controllers;
+namespace EloGreen.Tests.UnitTests.Controllers;
 
 public class ProductsControllerTests
 {

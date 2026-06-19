@@ -1,7 +1,7 @@
 ﻿using EloGreen.Application.Validators;
 using EloGreen.Application.ViewModels.Request;
 
-namespace EloGreen.Tests.Validators;
+namespace EloGreen.Tests.UnitTests.Validators;
 public class CreateSupplierValidatorTests
 {
     private readonly CreateSupplierValidator _validator;
