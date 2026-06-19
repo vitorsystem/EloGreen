@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="EloGreen.Application/EloGreen.Application.csproj" />
+  <Project Path="EloGreen.Domain/EloGreen.Domain.csproj" />
+  <Project Path="EloGreen.Infrastructure/EloGreen.Infrastructure.csproj" />
+  <Project Path="EloGreen.Tests/EloGreen.Tests.csproj" />
+  <Project Path="EloGreen/EloGreen.API.csproj" />
+</Solution>
